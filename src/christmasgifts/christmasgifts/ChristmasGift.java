@@ -6,12 +6,13 @@ package christmasgifts.christmasgifts;
  * and open the template in the editor.
  */
 import com.google.common.base.Strings;
+import java.io.Serializable;
 
 /**
  *
  * @author Maximiliano Herrera
  */
-public class ChristmasGift {
+public class ChristmasGift implements Serializable {
 
     private String recipient;
     private String idea;

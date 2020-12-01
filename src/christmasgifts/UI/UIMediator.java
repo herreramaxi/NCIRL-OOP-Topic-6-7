@@ -1,12 +1,17 @@
 package christmasgifts.UI;
 
-import christmasgifts.UI.MainJFrame;
-import christmasgifts.UI.MainJFrame;
 import christmasgifts.christmasgifts.ChristmasGift;
+import christmasgifts.christmasgifts.GiftList;
+import christmasgifts.christmasgifts.UIComponentObserverPull;
+import christmasgifts.christmasgifts.UIComponentObserverPush;
 import christmasgifts.christmasgifts.Validation;
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -23,13 +28,15 @@ import javax.swing.table.DefaultTableModel;
 public class UIMediator {
 
     private final MainJFrame mainFrame;
-    private ArrayList<ChristmasGift> gifts;
+    private GiftList gifts;
     private final JTable jTable;
 
     public UIMediator(MainJFrame mainFrame, JTable table) {
         this.mainFrame = mainFrame;
         jTable = table;
-        gifts = new ArrayList<ChristmasGift>();
+        gifts = new GiftList();
+        gifts.attach(new UIComponentObserverPush((aGiftList) -> this.updateTableModel(aGiftList)));
+        gifts.attach(new UIComponentObserverPull(() -> this.updateTableModel(this.gifts)));
     }
 
     public void addGift() {
@@ -54,7 +61,7 @@ public class UIMediator {
 
         this.mainFrame.initializeControlValues();
         this.mainFrame.cleanSearchFilter();
-        this.updateTableModel(gifts);
+//        this.updateTableModel(gifts);
 
         System.out.println("Gift added: ");
         System.out.println(gifts);
@@ -81,17 +88,40 @@ public class UIMediator {
 
         if (gift != null) {
             gifts.remove(gift);
+
             String searchText = this.mainFrame.getSearchFilter();
+            gifts.searchByRecipient(searchText);
+//            ArrayList<ChristmasGift> filteredGifts = this.FilterGiftsByRecipient(searchText);
 
-            ArrayList<ChristmasGift> filteredGifts = this.FilterGiftsByRecipient(searchText);
-
-            this.updateTableModel(filteredGifts);
+//            this.updateTableModel(filteredGifts);
         }
     }
 
-    public void SearchGifts(String searchText) {
-        ArrayList<ChristmasGift> filteredGifts = this.FilterGiftsByRecipient(searchText);
-        this.updateTableModel(filteredGifts);
+    public void initializeFrame() {
+        this.mainFrame.setEnabledDeleteButton(false);
+        this.mainFrame.setEnabledDisplayButton(false);
+    }
+
+    public void load() {
+        try {
+            this.gifts.load();
+        } catch (Exception ex) {
+            Logger.getLogger(UIMediator.class.getName()).log(Level.SEVERE, null, ex);
+            mainFrame.showErrorMessageDialog("Error when loading gifts: " + ex.getMessage());
+        }
+    }
+
+    public void save() {
+        try {
+            this.gifts.save();
+        } catch (Exception ex) {
+            Logger.getLogger(UIMediator.class.getName()).log(Level.SEVERE, null, ex);
+            mainFrame.showErrorMessageDialog("Error when saving gifts: " + ex.getMessage());
+        }
+    }
+
+    public void searchByRecipient(String recipient) {
+        this.gifts.searchByRecipient(recipient);
     }
 
     private void updateTableModel(ArrayList<ChristmasGift> gifts) {
@@ -113,11 +143,4 @@ public class UIMediator {
 
         return new ArrayList<>(filteredQuestions);
     }
-
-    public void initializeFrame() {
-      this.mainFrame.setEnabledSearchButton(false);
-      this.mainFrame.setEnabledDeleteButton(false);
-      this.mainFrame.setEnabledDisplayButton(false);
-    }
-
 }

@@ -30,7 +30,6 @@ public class MainJFrame extends javax.swing.JFrame {
             public void valueChanged(ListSelectionEvent event) {
                 jButtonDisplay.setEnabled(jTableGifts.getSelectedRow() >= 0);
                 jButtonDelete.setEnabled(jTableGifts.getSelectedRow() >= 0);
-                jButtonSearch.setEnabled(jTableGifts.getSelectedRow() >= 0);
             }
         });
     }
@@ -40,7 +39,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     public String getIdea() {
-        return jTextAreaIdea.getText();
+        return jTextFieldIdea.getText();
     }
 
     public String getUrl() {
@@ -58,7 +57,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     public void initializeControlValues() {
         jTextFieldRecipient.setText("");
-        jTextAreaIdea.setText("");
+        jTextFieldIdea.setText("");
         jTextFieldURL.setText("");
     }
 
@@ -106,10 +105,8 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextFieldRecipient = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextAreaIdea = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
-        jTextFieldURL = new javax.swing.JTextField();
+        jTextFieldIdea = new javax.swing.JTextField();
         jButtonAdd = new javax.swing.JButton();
         jButtonDisplay = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
@@ -120,6 +117,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jButtonSave = new javax.swing.JButton();
         jButtonLoad = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jTextFieldURL = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Christmas Gifts");
@@ -127,10 +125,6 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel1.setText("Recipient");
 
         jLabel2.setText("Idea");
-
-        jTextAreaIdea.setColumns(20);
-        jTextAreaIdea.setRows(5);
-        jScrollPane1.setViewportView(jTextAreaIdea);
 
         jLabel3.setText("URL");
 
@@ -186,10 +180,24 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(jTableGifts);
+        if (jTableGifts.getColumnModel().getColumnCount() > 0) {
+            jTableGifts.getColumnModel().getColumn(0).setMinWidth(30);
+            jTableGifts.getColumnModel().getColumn(0).setMaxWidth(50);
+        }
 
         jButtonSave.setText("Save");
+        jButtonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSaveActionPerformed(evt);
+            }
+        });
 
         jButtonLoad.setText("Load");
+        jButtonLoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLoadActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Search by recipient");
 
@@ -198,43 +206,45 @@ public class MainJFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(389, 389, 389))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)
+                        .addGap(389, 389, 389))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextFieldRecipient, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jTextFieldURL)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextFieldSearch)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jButtonAdd)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldURL, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jTextFieldRecipient, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jTextFieldIdea)))
+                            .addComponent(jScrollPane2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jButtonAdd)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonDisplay)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonDisplay)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonSave)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonLoad))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonSearch)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButtonSearch))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonSave)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonLoad)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -245,9 +255,9 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jTextFieldRecipient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldIdea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -256,9 +266,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAdd)
                     .addComponent(jButtonDisplay)
-                    .addComponent(jButtonDelete)
-                    .addComponent(jButtonSave)
-                    .addComponent(jButtonLoad))
+                    .addComponent(jButtonDelete))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -266,8 +274,12 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonSearch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonSave)
+                    .addComponent(jButtonLoad))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -295,13 +307,21 @@ public class MainJFrame extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTableGifts.getModel();
         int id = (int) model.getValueAt(rowIndex, 0);
 
-        mediator.deleteGift(id);
+        mediator.deleteGift(id);  
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
         String searchText = jTextFieldSearch.getText();
-        mediator.SearchGifts(searchText);
+        mediator.searchByRecipient(searchText);
     }//GEN-LAST:event_jButtonSearchActionPerformed
+
+    private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
+       mediator.save();
+    }//GEN-LAST:event_jButtonSaveActionPerformed
+
+    private void jButtonLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadActionPerformed
+      mediator.load();
+    }//GEN-LAST:event_jButtonLoadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -349,10 +369,9 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableGifts;
-    private javax.swing.JTextArea jTextAreaIdea;
+    private javax.swing.JTextField jTextFieldIdea;
     private javax.swing.JTextField jTextFieldRecipient;
     private javax.swing.JTextField jTextFieldSearch;
     private javax.swing.JTextField jTextFieldURL;
