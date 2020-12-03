@@ -5,6 +5,7 @@
  */
 package christmasgifts.UI;
 
+import christmasgifts.christmasgifts.ChristmasGift;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -17,12 +18,16 @@ import javax.swing.table.DefaultTableModel;
 public class MainJFrame extends javax.swing.JFrame {
 
     private final UIMediator mediator;
+    private final ShowGiftJDialog showDialog;
 
     /**
      * Creates new form MainJFrame
      */
     public MainJFrame() {
         initComponents();
+        showDialog = new ShowGiftJDialog(this, true);
+        showDialog.setVisible(false);
+
         mediator = new UIMediator(this, jTableGifts);
         mediator.initializeFrame();
 
@@ -79,6 +84,11 @@ public class MainJFrame extends javax.swing.JFrame {
 
     public void setEnabledDisplayButton(boolean enabled) {
         jButtonDisplay.setEnabled(enabled);
+    }
+
+    public void displayGift(ChristmasGift gift) {
+
+        showDialog.showGift(gift);
     }
 
     private int getSelectedQuestionId() {
@@ -242,9 +252,9 @@ public class MainJFrame extends javax.swing.JFrame {
                         .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonSave)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonLoad)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonSave)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -307,7 +317,7 @@ public class MainJFrame extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTableGifts.getModel();
         int id = (int) model.getValueAt(rowIndex, 0);
 
-        mediator.deleteGift(id);  
+        mediator.deleteGift(id);
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
@@ -316,11 +326,11 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSearchActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
-       mediator.save();
+        mediator.save();
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
     private void jButtonLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadActionPerformed
-      mediator.load();
+        mediator.load();
     }//GEN-LAST:event_jButtonLoadActionPerformed
 
     /**

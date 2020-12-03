@@ -3,18 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package christmasgifts.christmasgifts;
+package Interfaces;
 
 /**
  *
  * @author Maximiliano Herrera
  */
-public interface ISubject {
-
-    void attach(IObserverPull observer);
-
-    void attach(IObserverPush observer);
-
-    void Notify();
-
+public interface IObserverPull {
+      void update();
 }

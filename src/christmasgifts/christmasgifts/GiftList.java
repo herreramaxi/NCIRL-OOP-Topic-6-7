@@ -5,7 +5,11 @@
  */
 package christmasgifts.christmasgifts;
 
+import Interfaces.IObserverPush;
+import Interfaces.ISubject;
+import Interfaces.IObserverPull;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -91,7 +95,7 @@ public class GiftList extends ArrayList<ChristmasGift> implements ISubject {
         objectOut.close();
     }
 
-    public void load() throws IOException, ClassNotFoundException {
+    public void load() throws IOException, ClassNotFoundException, FileNotFoundException {
 
         FileInputStream fileOut = new FileInputStream(FILE_PATH);
         ObjectInputStream object = new ObjectInputStream(fileOut);

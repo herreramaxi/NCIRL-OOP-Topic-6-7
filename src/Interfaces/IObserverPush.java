@@ -3,12 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package christmasgifts.christmasgifts;
+package Interfaces;
+
+import christmasgifts.christmasgifts.ChristmasGift;
+import java.util.ArrayList;
 
 /**
  *
  * @author Maximiliano Herrera
  */
-public interface IObserverPull {
-      void update();
+public interface IObserverPush {
+
+    void update(ArrayList<ChristmasGift> gifts);
 }

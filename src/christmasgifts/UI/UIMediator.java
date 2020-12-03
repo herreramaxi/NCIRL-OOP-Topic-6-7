@@ -2,17 +2,13 @@ package christmasgifts.UI;
 
 import christmasgifts.christmasgifts.ChristmasGift;
 import christmasgifts.christmasgifts.GiftList;
-import christmasgifts.christmasgifts.UIComponentObserverPull;
-import christmasgifts.christmasgifts.UIComponentObserverPush;
 import christmasgifts.christmasgifts.Validation;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -61,10 +57,9 @@ public class UIMediator {
 
         this.mainFrame.initializeControlValues();
         this.mainFrame.cleanSearchFilter();
-//        this.updateTableModel(gifts);
 
         System.out.println("Gift added: ");
-        System.out.println(gifts);
+        System.out.println(gift);
     }
 
     public void displayGift(int id) {
@@ -74,7 +69,7 @@ public class UIMediator {
                 .orElse(null);
 
         if (gift != null) {
-            mainFrame.showMessageDialog(gift.toString());
+            mainFrame.displayGift(gift);
         } else {
             mainFrame.showErrorMessageDialog("Error: gift not found");
         }
@@ -91,9 +86,6 @@ public class UIMediator {
 
             String searchText = this.mainFrame.getSearchFilter();
             gifts.searchByRecipient(searchText);
-//            ArrayList<ChristmasGift> filteredGifts = this.FilterGiftsByRecipient(searchText);
-
-//            this.updateTableModel(filteredGifts);
         }
     }
 
@@ -105,6 +97,8 @@ public class UIMediator {
     public void load() {
         try {
             this.gifts.load();
+        } catch (FileNotFoundException ex) {
+            mainFrame.showMessageDialog("File not found, please save a file before loading.");
         } catch (Exception ex) {
             Logger.getLogger(UIMediator.class.getName()).log(Level.SEVERE, null, ex);
             mainFrame.showErrorMessageDialog("Error when loading gifts: " + ex.getMessage());
@@ -134,13 +128,5 @@ public class UIMediator {
             row[2] = gifts.get(i).getIdea();
             model.addRow(row);
         }
-    }
-
-    private ArrayList<ChristmasGift> FilterGiftsByRecipient(String filter) {
-        List<ChristmasGift> filteredQuestions = gifts.stream()
-                .filter((q) -> q.getRecipient().toLowerCase().contains(filter.toLowerCase()))
-                .collect(Collectors.toList());
-
-        return new ArrayList<>(filteredQuestions);
     }
 }

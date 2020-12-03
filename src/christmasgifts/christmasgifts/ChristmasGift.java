@@ -31,24 +31,12 @@ public class ChristmasGift implements Serializable {
         return recipient;
     }
 
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
-    }
-
     public String getIdea() {
         return idea;
     }
 
-    public void setIdea(String idea) {
-        this.idea = idea;
-    }
-
     public String getUrl() {
         return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public ChristmasGift(String recipient, String idea, String url) {
@@ -63,7 +51,7 @@ public class ChristmasGift implements Serializable {
         return Strings.isNullOrEmpty(recipient)
                 || Strings.isNullOrEmpty(idea)
                 || Strings.isNullOrEmpty(url)
-                ? validation.SetAsFailed("Please fill mandatory fields: Recipient, Idea and URL")
+                ? validation.setAsFailed("Please fill mandatory fields: Recipient, Idea and URL.")
                 : validation;
     }
 

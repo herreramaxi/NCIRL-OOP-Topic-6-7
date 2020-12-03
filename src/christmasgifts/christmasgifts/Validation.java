@@ -28,7 +28,7 @@ public class Validation {
         successful = true;
     }
 
-    public Validation SetAsFailed(String errorMessage) {
+    public Validation setAsFailed(String errorMessage) {
         this.successful = false;
         this.errorMessage = errorMessage;
 

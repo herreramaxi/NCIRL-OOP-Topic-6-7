@@ -3,16 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package christmasgifts.christmasgifts;
-
-import java.util.ArrayList;
+package Interfaces;
 
 /**
  *
  * @author Maximiliano Herrera
  */
-@FunctionalInterface
-public interface IUpdateFunction {
+public interface ISubject {
 
-    void update(ArrayList<ChristmasGift> gifts);
+    void attach(IObserverPull observer);
+
+    void attach(IObserverPush observer);
+
+    void Notify();
+
 }
